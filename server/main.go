@@ -32,9 +32,9 @@ func main() {
 		isLogin := sess.Get("is_logged_in")
 
 		if isLogin == true {
-			return c.JSON(Message{Message: "not logged in"})
-		} else {
 			return c.JSON(Message{Message: "logged in"})
+		} else {
+			return c.JSON(Message{Message: "NOT logged in"})
 		}
 	})
 
