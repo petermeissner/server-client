@@ -1,32 +1,44 @@
 package main
 
 import (
-	"bufio"
 	"encoding/hex"
 	"fmt"
 	"io"
 	"net/http"
+	"net/http/cookiejar"
 	"net/url"
-	"os"
 	"strings"
+	"time"
+
+	gbc "github.com/petermeissner/golang-basic-cred/library"
 )
 
 const server_url = "http://127.0.0.1:3000"
 
-func get_input(r *bufio.Reader) string {
-	fmt.Print("-> ")
-	text, _ := r.ReadString('\n')
+// func get_input(r *bufio.Reader) string {
+// 	fmt.Print("-> ")
+// 	text, _ := r.ReadString('\n')
 
-	// remove line endings from input string
-	text = strings.Replace(text, "\n", "", -1)
-	text = strings.Replace(text, "\r", "", -1)
+// 	// remove line endings from input string
+// 	text = strings.Replace(text, "\n", "", -1)
+// 	text = strings.Replace(text, "\r", "", -1)
 
-	return text
-}
+// 	return text
+// }
 
 func main() {
+
+	jar, err := cookiejar.New(nil)
+	if err != nil {
+		// error handling
+	}
+	http_client := http.Client{
+		Timeout: time.Duration(3) * time.Second,
+		Jar:     jar,
+	}
+
 	fmt.Println("Startup")
-	resp, err := http.Get(server_url)
+	resp, err := http_client.Get(server_url)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -38,7 +50,6 @@ func main() {
 	}
 	fmt.Println(string(body))
 
-	reader := bufio.NewReader(os.Stdin)
 	fmt.Println("Simple Shell")
 	fmt.Println("---------------------")
 
@@ -56,7 +67,8 @@ func main() {
 		}
 		command_known = false
 
-		text := get_input(reader)
+		text := gbc.Get_input(">: ")
+		// text := get_input(reader)
 
 		// help command
 		if strings.Compare("help", text) == 0 {
@@ -85,7 +97,7 @@ func main() {
 		if strings.Compare("ping", text) == 0 {
 			command_known = true
 
-			resp, err := http.Get(server_url)
+			resp, err := http_client.Get(server_url)
 			if err != nil {
 				fmt.Println(err)
 			}
@@ -96,22 +108,25 @@ func main() {
 		if strings.Compare("start", text) == 0 {
 			command_known = true
 
-			resp, err := http.Get(server_url)
+			resp, err := http_client.Get(server_url)
 			if err != nil {
 				fmt.Println(err)
 			}
 			fmt.Println("# Pinging server, status code: ", resp.StatusCode)
 
-			// fmt.Print("\nName?")
-			// user := get_input(reader)
-
-			// fmt.Print("Password?")
-			// pw := get_input(reader)
+			// auth := gbc.Get_auth_from_term()
 
 			// execute
-			// data := url.Values{"name": []string{user}, "password": []string{pw}}
+			//data := url.Values{"name": []string{auth.Username}, "password": []string{auth.Password}}
 			data := url.Values{"name": []string{"test"}, "password": []string{"user"}}
-			post_res, err := http.PostForm(server_url+"/login", data)
+			post_res, err := http_client.PostForm(server_url+"/login", data)
+
+			server_parsed_url, err := url.Parse(server_url)
+			if err != nil {
+				fmt.Println(err)
+			}
+			cookies := http_client.Jar.Cookies(server_parsed_url)
+
 			fmt.Println("\n# Done POST to server, status code:", post_res.StatusCode)
 			post_body, err := io.ReadAll(resp.Body)
 			for name, headers := range post_res.Header {
@@ -119,11 +134,15 @@ func main() {
 					println("# " + name + ": " + hdr)
 				}
 			}
-			for _, cookie := range post_res.Cookies() {
-				fmt.Println(cookie.Name, cookie.Value)
+			for _, cookie := range cookies {
+				fmt.Println("cookies?", cookie.Name, cookie.Value)
 			}
 			fmt.Println("\n# Body content\n" + string(post_body))
 
+			get_res, err := http_client.Get(server_url)
+			get_body, err := io.ReadAll(get_res.Body)
+
+			fmt.Println(string(get_body))
 		}
 	}
 }
