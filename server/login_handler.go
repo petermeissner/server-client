@@ -8,7 +8,7 @@ import (
 
 // Auth parse type
 type Auth struct {
-	Name     string `json:"name" xml:"name" form:"name"`
+	Username string `json:"username" xml:"username" form:"username"`
 	Password string `json:"password" xml:"password" form:"password"`
 }
 
@@ -19,12 +19,12 @@ type Auth struct {
 //
 // - set appropriate values in session variables
 func login_handler(auth *Auth, sess *session.Session) {
-	if auth.Name == "test" && auth.Password == "user" {
+	if auth.Username == "test" && auth.Password == "user" {
 		sess.Set("is_logged_in", true)
-		sess.Set("name", auth.Name)
+		sess.Set("Username", auth.Username)
 	} else {
 		sess.Set("is_logged_in", false)
-		sess.Set("name", nil)
+		sess.Set("Username", nil)
 	}
 	if err := sess.Save(); err != nil {
 		panic(err)
@@ -41,14 +41,14 @@ func login_handler_verbose(auth *Auth, sess *session.Session) {
 
 	fmt.Println(auth)
 
-	if auth.Name == "test" && auth.Password == "user" {
+	if auth.Username == "test" && auth.Password == "user" {
 		fmt.Println("# Auth match")
 		sess.Set("is_logged_in", true)
-		sess.Set("name", auth.Name)
+		sess.Set("Username", auth.Username)
 	} else {
 		fmt.Println("# NO auth match")
 		sess.Set("is_logged_in", false)
-		sess.Set("name", nil)
+		sess.Set("Username", nil)
 	}
 
 	if err := sess.Save(); err != nil {

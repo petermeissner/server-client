@@ -133,7 +133,7 @@ func cli_test_login(http_client http.Client, resp *http.Response) {
 	// get authentication input and send it to server
 	//
 	auth := gbc.Get_auth_from_term()
-	data := url.Values{"name": []string{auth.Username}, "password": []string{auth.Password}}
+	data := url.Values{"username": []string{auth.Username}, "password": []string{auth.Password}}
 	post_res, err := http_client.PostForm(server_url+"/login", data)
 
 	// report results
@@ -141,9 +141,9 @@ func cli_test_login(http_client http.Client, resp *http.Response) {
 
 	// headers
 	fmt.Println("\n# Done POST to server, status code:", post_res.StatusCode)
-	for name, headers := range post_res.Header {
+	for username, headers := range post_res.Header {
 		for _, hdr := range headers {
-			println("# " + name + ": " + hdr)
+			println("# " + username + ": " + hdr)
 		}
 	}
 

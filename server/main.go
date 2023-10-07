@@ -5,6 +5,7 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/session"
+	"github.com/gofiber/template/html/v2"
 )
 
 var store *session.Store
@@ -18,7 +19,13 @@ func main() {
 	// new session-store
 	store = session.New()
 
-	app := fiber.New()
+	// app config
+	conf := fiber.Config{
+		Views: html.New("./server-views", ".html"),
+	}
+
+	// app
+	app := fiber.New(conf)
 
 	// route: root
 	app.Get("/", func(c *fiber.Ctx) error {
@@ -36,6 +43,24 @@ func main() {
 		} else {
 			return c.JSON(Message{Message: "NOT logged in"})
 		}
+	})
+
+	// route: test
+	app.Get("/loginform", func(c *fiber.Ctx) error {
+		sess, err := store.Get(c)
+		if err != nil {
+			log.Println(err)
+		}
+
+		isLogin := sess.Get("is_logged_in")
+
+		// render HTML template
+		return c.Render("loginform", fiber.Map{"login": isLogin})
+	})
+
+	// route: test
+	app.Get("/test", func(c *fiber.Ctx) error {
+		return c.JSON(Message{Message: "test"})
 	})
 
 	// route: login
