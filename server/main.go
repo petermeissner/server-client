@@ -79,7 +79,7 @@ func main() {
 		}
 
 		// check credentials and set session values
-		login_handler_verbose(auth, sess)
+		login_handler(auth, sess)
 
 		return c.Redirect("/")
 	})
