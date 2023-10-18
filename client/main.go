@@ -10,7 +10,7 @@ import (
 	"strings"
 	"time"
 
-	gbc "github.com/petermeissner/golang-basic-cred/library"
+	gbc "github.com/petermeissner/golang-basic-cred/pkg"
 )
 
 // CONSTANTS

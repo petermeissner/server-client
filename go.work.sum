@@ -1,0 +1,10 @@
+github.com/jinzhu/inflection v1.0.0 h1:K317FqzuhWc8YvSVlFMCCUb36O/S9MCKRDI7QkRKD/E=
+github.com/jinzhu/now v1.1.5 h1:/o9tlHleP7gOFmsnYNz3RGnqzefHA47wQpKrrdTIwXQ=
+github.com/petermeissner/golang-basic-cred v0.1.2 h1:Ysen7FI0QmtuNEomEJIXKTRyz6Tg+E2Sbde7kSHKS60=
+github.com/petermeissner/golang-basic-cred v0.1.2/go.mod h1:sqQYUPIp7KedBs07RyvWngD1krMxrfveCI8xJ6IoIk0=
+github.com/petermeissner/golang-basic-cred v0.1.4 h1:u6o8lAC3fgu66gaiZ76WbpdYBwGQemUZDhsACUFTL4M=
+github.com/petermeissner/golang-basic-cred v0.1.4/go.mod h1:I7eY6HdZD/7aEZ5zazhVvUXPBntvkSizPRh/ucjueTY=
+golang.org/x/crypto v0.7.0 h1:AvwMYaRytfdeVt3u6mLaxYtErKYjxA2OXjJ1HHq6t3A=
+golang.org/x/crypto v0.14.0 h1:wBqGXzWJW6m1XrIKlAH0Hs1JJ7+9KBwnIO8v66Q9cHc=
+golang.org/x/term v0.13.0 h1:bb+I9cTfFazGW51MZqBVmZy7+JEJMouUHTUSKVQLBek=
+gorm.io/gorm v1.25.5 h1:zR9lOiiYf09VNh5Q1gphfyia1JpiClIWG9hQaxB/mls=
